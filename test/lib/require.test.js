@@ -53,7 +53,7 @@ describe('require-able', function () {
     nodemon({ script: appjs, verbose: true, env: { PORT: utils.port } }).on('start', function () {
       setTimeout(function () {
         touch.sync(appjs);
-      }, 1000);
+      }, 2000);
     }).on('restart', function () {
       restarted = true;
       nodemon.emit('quit');

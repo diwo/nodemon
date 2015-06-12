@@ -78,7 +78,7 @@ describe('nodemon fork child restart', function () {
       if (event.type === 'start') {
         setTimeout(function () {
           touch.sync(tmpjs);
-        }, 1000);
+        }, 2000);
       } else if (event.type === 'restart') {
         assert(true, 'nodemon restarted');
         cleanup(p, done);
@@ -166,7 +166,7 @@ describe('nodemon fork child restart', function () {
         if (event.type === 'start') {
           setTimeout(function () {
             touch.sync(tmpmd);
-          }, 1000);
+          }, 2000);
         }
       });
     }, 2000);

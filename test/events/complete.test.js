@@ -74,7 +74,7 @@ describe('events should follow normal flow on user triggered change', function (
         setTimeout(function () {
           plan.assert(true, 'restarting ' + appjs);
           touch.sync(appjs);
-        }, 1500);
+        }, 2000);
       } else if (run === 2) {
         plan.assert(true, 'finished');
       } else {
@@ -126,7 +126,7 @@ describe('events should follow normal flow on user triggered change', function (
       setTimeout(function () {
         plan.assert(true, 'restarting');
         touch.sync(appjs);
-      }, 1500);
+      }, 2000);
     });
   });
 });

@@ -47,7 +47,7 @@ describe('when nodemon runs (2)', function () {
 
       setTimeout(function () {
         touch.sync(tmp);
-      }, 500);
+      }, 2000);
     }).on('restart', function () {
       assert(true, 'nodemon restarted');
       nodemon.once('exit', function () {
