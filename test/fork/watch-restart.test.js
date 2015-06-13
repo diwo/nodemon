@@ -148,13 +148,16 @@ describe('nodemon fork child restart', function () {
     setTimeout(function () {
       var p = run('--ext js,md ' + appjs, {
         error: function (data) {
+          console.log('error: ' + data);
           p.send('quit');
           cleanup(p, done, new Error(data));
         },
         output: function (data) {
           var msg = colour.strip(data.trim());
+          console.log('msg: ' + msg);
           if (monitor(msg)) {
             var changes = msg.slice(-5).split('/');
+            console.log('changes: ' + changes);
             var restartedOn = changes.pop();
             assert(restartedOn === '1', 'nodemon restarted on a single file change');
             cleanup(p, done);
