@@ -95,6 +95,7 @@ describe('events should follow normal flow on user triggered change', function (
     });
     p.stdout.on('data', function(m) {
       m = m.toString().trim();
+      console.log('data: ' + m);
       if (m === 'STOPPED') {
         p.kill('SIGINT');
       }

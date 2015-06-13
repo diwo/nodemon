@@ -33,11 +33,13 @@ describe('nodemon fork monitor', function () {
     var startWatch = false;
     var p = run(appjs, {
       output: function (data) {
+        console.log('data: ' + data);
         if (match(data, 'files triggering change check: test/fixtures/app.js')) {
           startWatch = true;
         }
         if (startWatch && match(data, 'changes after filters')) {
           var changes = colour.strip(data.trim());
+          console.log('changes: ' + changes);
           var restartedOn = null;
           changes.replace(/changes after filters \(before\/after\): \d+\/(\d+)/, function (all, m) {
             restartedOn = m;
@@ -49,6 +51,7 @@ describe('nodemon fork monitor', function () {
         }
       },
       error: function (data) {
+        console.log('error: ' + data);
         utils.cleanup(p, done, new Error(data));
       }
     });

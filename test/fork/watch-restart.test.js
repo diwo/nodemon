@@ -69,12 +69,14 @@ describe('nodemon fork child restart', function () {
 
     var p = run('--ext js ' + appjs, {
       error: function (data) {
+        console.log('error: ' + data);
         p.send('quit');
         cleanup(p, done, new Error(data));
       }
     });
 
     p.on('message', function (event) {
+      console.log('message: ' + event);
       if (event.type === 'start') {
         setTimeout(function () {
           touch.sync(tmpjs);
