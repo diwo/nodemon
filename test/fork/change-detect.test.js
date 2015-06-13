@@ -30,41 +30,43 @@ describe('nodemon fork simply running', function () {
 
 describe('nodemon fork monitor', function () {
   it('should restart on .js file changes with no arguments', function (done) {
-    var startWatch = false;
-    var p = run(appjs, {
-      output: function (data) {
-        console.log('data: ' + data);
-        if (match(data, 'files triggering change check: test/fixtures/app.js')) {
-          startWatch = true;
-        }
-        if (startWatch && match(data, 'changes after filters')) {
-          var changes = colour.strip(data.trim());
-          console.log('changes: ' + changes);
-          var restartedOn = null;
-          changes.replace(/changes after filters \(before\/after\): \d+\/(\d+)/, function (all, m) {
-            restartedOn = m;
-          });
+    setTimeout(function () {
+      var startWatch = false;
+      var p = run(appjs, {
+        output: function (data) {
+          console.log('data: ' + data);
+          if (match(data, 'files triggering change check: test/fixtures/app.js')) {
+            startWatch = true;
+          }
+          if (startWatch && match(data, 'changes after filters')) {
+            var changes = colour.strip(data.trim());
+            console.log('changes: ' + changes);
+            var restartedOn = null;
+            changes.replace(/changes after filters \(before\/after\): \d+\/(\d+)/, function (all, m) {
+              restartedOn = m;
+            });
 
-          // .split('changes after filters').pop().split('/');
-          // var restartedOn = changes.pop().trim();
-          assert(restartedOn === '1', 'nodemon restarted on 1 file: ' + restartedOn + ' / ' + data.toString());
+            // .split('changes after filters').pop().split('/');
+            // var restartedOn = changes.pop().trim();
+            assert(restartedOn === '1', 'nodemon restarted on 1 file: ' + restartedOn + ' / ' + data.toString());
+          }
+        },
+        error: function (data) {
+          console.log('error: ' + data);
+          utils.cleanup(p, done, new Error(data));
         }
-      },
-      error: function (data) {
-        console.log('error: ' + data);
-        utils.cleanup(p, done, new Error(data));
-      }
-    });
+      });
 
-    p.on('message', function (event) {
-      if (event.type === 'restart') {
-        utils.cleanup(p, done);
-      } else if (event.type === 'start') {
-        setTimeout(function () {
-          touch.sync(appjs);
-        }, 2500);
-      }
-    });
+      p.on('message', function (event) {
+        if (event.type === 'restart') {
+          utils.cleanup(p, done);
+        } else if (event.type === 'start') {
+          setTimeout(function () {
+            touch.sync(appjs);
+          }, 2500);
+        }
+      });
+    }, 2000);
   });
 
   it('should NOT restart on non-.js file changes with no arguments', function (done) {
